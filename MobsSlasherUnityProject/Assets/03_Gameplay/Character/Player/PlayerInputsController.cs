@@ -7,8 +7,6 @@ namespace Mobs.Gameplay.Character.Player
     {
         private PlayerInputsActions m_actions = null;
 
-
-
         #region Life Cycle
         // Start is called before the first frame update
         void Start()
@@ -33,8 +31,6 @@ namespace Mobs.Gameplay.Character.Player
             ReadMovementInputs();
         }
         #endregion
-
-
 
         #region MovementInputs
         [Header("Movement")]
