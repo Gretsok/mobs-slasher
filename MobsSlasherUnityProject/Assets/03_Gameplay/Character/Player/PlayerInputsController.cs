@@ -17,6 +17,8 @@ namespace Mobs.Gameplay.Character.Player
             m_actions.Gameplay.Jump.canceled += Jump_canceled;
             m_actions.Gameplay.Sprint.started += Sprint_started;
             m_actions.Gameplay.Sprint.canceled += Sprint_canceled;
+            m_actions.Gameplay.Attack.started += Attack_started;
+            m_actions.Gameplay.Attack.canceled += Attack_canceled;
         }
 
 
@@ -27,6 +29,8 @@ namespace Mobs.Gameplay.Character.Player
             m_actions.Gameplay.Jump.canceled -= Jump_canceled;
             m_actions.Gameplay.Sprint.started -= Sprint_started;
             m_actions.Gameplay.Sprint.canceled -= Sprint_canceled;
+            m_actions.Gameplay.Attack.started -= Attack_started;
+            m_actions.Gameplay.Attack.canceled -= Attack_canceled;
 
             m_actions.Disable();
             m_actions.Dispose();
@@ -44,6 +48,8 @@ namespace Mobs.Gameplay.Character.Player
         private PlayerMovementController m_movementController = null;
         [SerializeField]
         private PlayerCameraController m_cameraController = null;
+        [SerializeField]
+        private PlayerCombatController m_combatController = null;
         private PlayerCharacterMovementInputs m_movementInputs = default;
 
         private void ReadMovementInputs()
@@ -53,6 +59,7 @@ namespace Mobs.Gameplay.Character.Player
 
             m_movementController.SetInputs(ref m_movementInputs);
             m_cameraController.SetInputs(ref m_movementInputs);
+            m_combatController.SetInputs(ref m_movementInputs);
         }
         private void Jump_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
@@ -71,6 +78,16 @@ namespace Mobs.Gameplay.Character.Player
         private void Sprint_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
             m_movementInputs.Sprinting = true;
+        }
+
+        private void Attack_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+            m_movementInputs.Attacking = false;
+        }
+
+        private void Attack_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+            m_movementInputs.Attacking = true;
         }
         #endregion
     }

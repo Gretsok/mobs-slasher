@@ -2,6 +2,7 @@
 
 namespace Mobs.Gameplay.Combat
 {
+    [System.Serializable]
     public class Damage
     {
         public DamageDealer Source = null;

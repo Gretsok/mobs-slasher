@@ -29,6 +29,8 @@ namespace MOtter.Utils
             {
                 SetCamera(camera.transform);
             }
+            else
+                StartCoroutine(WaitForMainCamera());
         }
 
         public void SetCamera(Transform cameraTransform)
@@ -54,19 +56,20 @@ namespace MOtter.Utils
                 {
                     if (m_reverseBillboard)
                     {
-                        transform.forward = m_cameraTransform.forward;
+                        transform.forward = -m_cameraTransform.forward;
                     }
                     else
                     {
-                        transform.forward = -m_cameraTransform.forward;
+                        transform.forward = m_cameraTransform.forward;
                     }
 
                 }
                 else if (m_billboardType == EBillboardType.WatchingCamera)
                 {
-                    if (m_reverseBillboard)
+                    if (!m_reverseBillboard)
                     {
-                        transform.LookAt(-m_cameraTransform.position);
+                        var posToLookAt = transform.position - (m_cameraTransform.position - transform.position);
+                        transform.LookAt(posToLookAt);
                     }
                     else
                     {

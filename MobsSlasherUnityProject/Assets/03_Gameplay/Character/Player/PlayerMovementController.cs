@@ -9,6 +9,7 @@ namespace Mobs.Gameplay.Character.Player
         public Vector2 CameraInput;
         public bool JumpDown;
         public bool Sprinting;
+        public bool Attacking;
     }
 
     public class PlayerMovementController : BaseCharacterMovementController
@@ -82,20 +83,16 @@ namespace Mobs.Gameplay.Character.Player
             else
             {
                 // In Air movement
-
                 Vector3 nonGravityMovement = Vector3.ProjectOnPlane(currentVelocity, m_gravity);
 
                 /*Vector3 move3DInput = m_cameraTarget.TransformDirection(new Vector3(m_inputs.MoveInput.x, 0f, m_inputs.MoveInput.y));
                 Vector3 flattenMove3Dinput = new Vector3(move3DInput.x, 0f, move3DInput.z).normalized;*/
-
 
                 currentVelocity +=
                     // Gravity
                     m_gravity * deltaTime
                     // Air deceleration
                     - nonGravityMovement * deltaTime * m_airDeceleration;
-
-                
             }
         }
 

@@ -14,6 +14,7 @@ namespace Mobs.Gameplay.Combat
         public int MaxLifePoints => m_params.BaseMaxLifePoints;
 
         private int m_lifePoints = 0;
+        public int LifePoints => m_lifePoints;
 
         [Header("Events")]
         [SerializeField]
@@ -30,9 +31,19 @@ namespace Mobs.Gameplay.Combat
             Initialize();
         }
 
+        protected virtual void Start()
+        {
+            Initialize();
+        }
+
         private void Initialize()
         {
             m_lifePoints = MaxLifePoints;
+        }
+
+        protected virtual void Update()
+        {
+
         }
 
         public void TakeDamage(Damage a_damage)
