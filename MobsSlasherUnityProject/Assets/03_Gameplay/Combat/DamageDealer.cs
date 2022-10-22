@@ -42,9 +42,10 @@ namespace Mobs.Gameplay.Combat
             m_canDealDamage = a_canDealDamage;
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected virtual void OnTriggerEnter(Collider other)
         {
-            if(other.TryGetComponent(out CombatControllerCollisionRelay combatControllerCollisionRelay) && m_canDealDamage)
+            if(other.TryGetComponent(out CombatControllerCollisionRelay combatControllerCollisionRelay) && m_canDealDamage
+                && (Owner == null || combatControllerCollisionRelay.Owner == null || Owner.TeamIndex != combatControllerCollisionRelay.Owner.TeamIndex))
             {
                 var registeredTarget = m_targetsHit.Find(t => t.CombatController == combatControllerCollisionRelay.Owner);
                 if (registeredTarget != null)
@@ -66,7 +67,14 @@ namespace Mobs.Gameplay.Combat
                 newDamage.Source = this;
                 registeredTarget.LastTimeHit = Time.time;
                 combatControllerCollisionRelay.Owner.TakeDamage(newDamage);
+
+                OnCombatControllerCollisionRelayHit(combatControllerCollisionRelay);
             }
+        }
+
+        protected virtual void OnCombatControllerCollisionRelayHit(CombatControllerCollisionRelay a_combatControllerCollisionRelay)
+        {
+
         }
     }
 }

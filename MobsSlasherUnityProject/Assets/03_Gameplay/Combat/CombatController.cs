@@ -36,6 +36,9 @@ namespace Mobs.Gameplay.Combat
             Initialize();
         }
 
+        protected virtual void OnDestroy()
+        { }
+
         private void Initialize()
         {
             m_lifePoints = MaxLifePoints;
