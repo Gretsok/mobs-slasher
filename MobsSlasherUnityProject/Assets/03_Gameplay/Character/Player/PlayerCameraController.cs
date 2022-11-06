@@ -15,9 +15,9 @@ namespace Mobs.Gameplay.Character.Player
         [SerializeField]
         private Transform m_verticalRotator = null;
 
-        private PlayerCharacterMovementInputs m_inputs;
+        private PlayerCharacterInputs m_inputs;
 
-        public void SetInputs(ref PlayerCharacterMovementInputs inputs)
+        public void SetInputs(ref PlayerCharacterInputs inputs)
         {
             m_inputs = inputs;
         }

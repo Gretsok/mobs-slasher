@@ -3,18 +3,23 @@ using UnityEngine;
 namespace Mobs.Gameplay.Character.Player
 {
     [System.Serializable]
-    public struct PlayerCharacterMovementInputs
+    public struct PlayerCharacterInputs
     {
         public Vector2 MoveInput;
         public Vector2 CameraInput;
         public bool JumpDown;
         public bool Sprinting;
-        public bool Attacking;
+        public bool StartFirstAttack;
+        public bool StopFirstAttack;
+        public bool StartSecondAttack;
+        public bool StopSecondAttack;
+        public bool StartThirdAttack;
+        public bool StopThirdAttack;
     }
 
     public class PlayerMovementController : BaseCharacterMovementController
     {
-        PlayerCharacterMovementInputs m_inputs = default;
+        PlayerCharacterInputs m_inputs = default;
 
 
         [Header("Refs")]
@@ -38,10 +43,14 @@ namespace Mobs.Gameplay.Character.Player
         private float m_timeOfLastJump = float.MinValue;
         [SerializeField]
         private float m_airDeceleration = 2f;
+        [SerializeField]
+        private float m_inAirMovementSmooth = 5f;
+        private Vector3 m_inAirFlattenMove3DInput = default;
 
 
 
-        public void SetInputs(ref PlayerCharacterMovementInputs inputs)
+
+        public void SetInputs(ref PlayerCharacterInputs inputs)
         {
             m_inputs = inputs;
         }
@@ -78,21 +87,42 @@ namespace Mobs.Gameplay.Character.Player
                     currentVelocity += Vector3.up * m_jumpVelocity;
                     m_timeOfLastJump = Time.time;
                 }
-
+                m_inAirFlattenMove3DInput = default;
             }
             else
             {
                 // In Air movement
                 Vector3 nonGravityMovement = Vector3.ProjectOnPlane(currentVelocity, m_gravity);
 
-                /*Vector3 move3DInput = m_cameraTarget.TransformDirection(new Vector3(m_inputs.MoveInput.x, 0f, m_inputs.MoveInput.y));
-                Vector3 flattenMove3Dinput = new Vector3(move3DInput.x, 0f, move3DInput.z).normalized;*/
 
-                currentVelocity +=
-                    // Gravity
-                    m_gravity * deltaTime
-                    // Air deceleration
-                    - nonGravityMovement * deltaTime * m_airDeceleration;
+                if(m_inputs.MoveInput.sqrMagnitude > 0.001f)
+                {
+                    Vector3 move3DInput = m_cameraTarget.TransformDirection(
+                        m_inputs.MoveInput.x, 
+                        0f,
+                        m_inputs.MoveInput.y);
+                    m_inAirFlattenMove3DInput = // Vector3.Lerp(m_inAirFlattenMove3DInput, 
+                        new Vector3(move3DInput.x, 0f, move3DInput.z).normalized;//,
+                        // deltaTime * m_inAirMovementSmooth);
+
+
+                    currentVelocity +=
+                        // Gravity
+                        m_gravity * deltaTime
+                        // Cancel movement
+                        -nonGravityMovement
+                        // Air control
+                        + m_inAirFlattenMove3DInput * nonGravityMovement.magnitude * (1 - deltaTime * m_airDeceleration);
+                }
+                else
+                {
+
+                    currentVelocity +=
+                        // Gravity
+                        m_gravity * deltaTime
+                        // Air deceleration
+                        - nonGravityMovement * deltaTime * m_airDeceleration;
+                }
             }
         }
 
@@ -115,11 +145,8 @@ namespace Mobs.Gameplay.Character.Player
             }
             else
             {
-                Vector3 flatForward = new Vector3(transform.forward.x, 0f, transform.forward.z);
-                flatForward.Normalize();
-
                 currentRotation = Quaternion.Lerp(currentRotation,
-                        Quaternion.LookRotation(flatForward, Vector3.up),
+                        Quaternion.LookRotation(m_inAirFlattenMove3DInput, Vector3.up),
                         deltaTime * m_orientationSmooth);
             }
             

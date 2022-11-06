@@ -156,9 +156,27 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Attack"",
+                    ""name"": ""FirstAttack"",
                     ""type"": ""Button"",
                     ""id"": ""70cf7cb4-5fb8-4d32-97e4-e3c0a054b3a0"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SecondAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""5104ed30-08a4-45c1-8b46-4d0e625ec4ac"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ThirdAttack"",
+                    ""type"": ""Button"",
+                    ""id"": ""7577815a-1e23-48eb-9994-3fff2393c154"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -283,7 +301,29 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""MouseAndKeyboard"",
-                    ""action"": ""Attack"",
+                    ""action"": ""FirstAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""409546b2-5fb0-45bb-8317-3bd007eda566"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseAndKeyboard"",
+                    ""action"": ""SecondAttack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""da142e42-b9be-40f5-b30e-3785c9132de8"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseAndKeyboard"",
+                    ""action"": ""ThirdAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -330,7 +370,9 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
         m_Gameplay_LookAround = m_Gameplay.FindAction("LookAround", throwIfNotFound: true);
         m_Gameplay_Jump = m_Gameplay.FindAction("Jump", throwIfNotFound: true);
         m_Gameplay_Sprint = m_Gameplay.FindAction("Sprint", throwIfNotFound: true);
-        m_Gameplay_Attack = m_Gameplay.FindAction("Attack", throwIfNotFound: true);
+        m_Gameplay_FirstAttack = m_Gameplay.FindAction("FirstAttack", throwIfNotFound: true);
+        m_Gameplay_SecondAttack = m_Gameplay.FindAction("SecondAttack", throwIfNotFound: true);
+        m_Gameplay_ThirdAttack = m_Gameplay.FindAction("ThirdAttack", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -428,7 +470,9 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_LookAround;
     private readonly InputAction m_Gameplay_Jump;
     private readonly InputAction m_Gameplay_Sprint;
-    private readonly InputAction m_Gameplay_Attack;
+    private readonly InputAction m_Gameplay_FirstAttack;
+    private readonly InputAction m_Gameplay_SecondAttack;
+    private readonly InputAction m_Gameplay_ThirdAttack;
     public struct GameplayActions
     {
         private @PlayerInputsActions m_Wrapper;
@@ -438,7 +482,9 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
         public InputAction @LookAround => m_Wrapper.m_Gameplay_LookAround;
         public InputAction @Jump => m_Wrapper.m_Gameplay_Jump;
         public InputAction @Sprint => m_Wrapper.m_Gameplay_Sprint;
-        public InputAction @Attack => m_Wrapper.m_Gameplay_Attack;
+        public InputAction @FirstAttack => m_Wrapper.m_Gameplay_FirstAttack;
+        public InputAction @SecondAttack => m_Wrapper.m_Gameplay_SecondAttack;
+        public InputAction @ThirdAttack => m_Wrapper.m_Gameplay_ThirdAttack;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -463,9 +509,15 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
                 @Sprint.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSprint;
                 @Sprint.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSprint;
                 @Sprint.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSprint;
-                @Attack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttack;
-                @Attack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttack;
-                @Attack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnAttack;
+                @FirstAttack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnFirstAttack;
+                @FirstAttack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnFirstAttack;
+                @FirstAttack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnFirstAttack;
+                @SecondAttack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSecondAttack;
+                @SecondAttack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSecondAttack;
+                @SecondAttack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnSecondAttack;
+                @ThirdAttack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThirdAttack;
+                @ThirdAttack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThirdAttack;
+                @ThirdAttack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThirdAttack;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -485,9 +537,15 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
-                @Attack.started += instance.OnAttack;
-                @Attack.performed += instance.OnAttack;
-                @Attack.canceled += instance.OnAttack;
+                @FirstAttack.started += instance.OnFirstAttack;
+                @FirstAttack.performed += instance.OnFirstAttack;
+                @FirstAttack.canceled += instance.OnFirstAttack;
+                @SecondAttack.started += instance.OnSecondAttack;
+                @SecondAttack.performed += instance.OnSecondAttack;
+                @SecondAttack.canceled += instance.OnSecondAttack;
+                @ThirdAttack.started += instance.OnThirdAttack;
+                @ThirdAttack.performed += instance.OnThirdAttack;
+                @ThirdAttack.canceled += instance.OnThirdAttack;
             }
         }
     }
@@ -521,6 +579,8 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
         void OnLookAround(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
-        void OnAttack(InputAction.CallbackContext context);
+        void OnFirstAttack(InputAction.CallbackContext context);
+        void OnSecondAttack(InputAction.CallbackContext context);
+        void OnThirdAttack(InputAction.CallbackContext context);
     }
 }

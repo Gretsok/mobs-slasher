@@ -134,9 +134,27 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Attack",
+                    "name": "FirstAttack",
                     "type": "Button",
                     "id": "70cf7cb4-5fb8-4d32-97e4-e3c0a054b3a0",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "SecondAttack",
+                    "type": "Button",
+                    "id": "5104ed30-08a4-45c1-8b46-4d0e625ec4ac",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ThirdAttack",
+                    "type": "Button",
+                    "id": "7577815a-1e23-48eb-9994-3fff2393c154",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -261,7 +279,29 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "MouseAndKeyboard",
-                    "action": "Attack",
+                    "action": "FirstAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "409546b2-5fb0-45bb-8317-3bd007eda566",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseAndKeyboard",
+                    "action": "SecondAttack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "da142e42-b9be-40f5-b30e-3785c9132de8",
+                    "path": "<Keyboard>/c",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "MouseAndKeyboard",
+                    "action": "ThirdAttack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

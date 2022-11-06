@@ -4,11 +4,11 @@ using UnityEngine.Events;
 
 namespace Mobs.Gameplay.Combat
 {
-    public class CombatController : MonoBehaviour
+    public class DamageHandlingController : MonoBehaviour
     {
         [Header("Parameters")]
         [SerializeField]
-        private CombatControllerParameters m_params = default;
+        private DamageHandlingControllerParameters m_params = default;
 
         public int TeamIndex => m_params.TeamIndex;
         public int MaxLifePoints => m_params.BaseMaxLifePoints;
@@ -21,11 +21,11 @@ namespace Mobs.Gameplay.Combat
         private UnityEvent m_onDamageTakenForEditor = null;
         [SerializeField]
         private UnityEvent m_onDiedForEditor = null;
-        public Action<CombatController, int, int> OnDamageTaken = null;
-        public Action<CombatController> OnDied = null;
+        public Action<DamageHandlingController, int, int> OnDamageTaken = null;
+        public Action<DamageHandlingController> OnDied = null;
 
 
-        public void SetCombatControllerParameters(CombatControllerParameters a_parameters)
+        public void SetCombatControllerParameters(DamageHandlingControllerParameters a_parameters)
         {
             m_params = a_parameters;
             Initialize();
@@ -57,7 +57,8 @@ namespace Mobs.Gameplay.Combat
                 return;
             }
 
-            if(a_damage.Source == null 
+            if(a_damage.Source == null
+                || a_damage.Source.Owner == null
                 || a_damage.Source.Owner.TeamIndex != TeamIndex)
             {
                 var lifePointsBeforeHit = m_lifePoints;

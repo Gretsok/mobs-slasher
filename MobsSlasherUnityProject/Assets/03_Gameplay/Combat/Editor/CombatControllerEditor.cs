@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Mobs.Gameplay.Combat.Editor
 {
-    [CustomEditor(typeof(CombatController), true)]
+    [CustomEditor(typeof(DamageHandlingController), true)]
     public class CombatControllerEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
@@ -12,7 +12,7 @@ namespace Mobs.Gameplay.Combat.Editor
             GUILayout.Space(30f);
 
             GUILayout.Label("Combat Controller Infos :", EditorStyles.boldLabel);
-            GUILayout.Label($"Life points : {(target as CombatController).LifePoints}/{(target as CombatController).MaxLifePoints}");
+            GUILayout.Label($"Life points : {(target as DamageHandlingController).LifePoints}/{(target as DamageHandlingController).MaxLifePoints}");
             
         }
     }

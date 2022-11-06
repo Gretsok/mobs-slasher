@@ -228,7 +228,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e35b2a60780dd4744a56df64fabf392e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_owner: {fileID: 5512288026075975478}
+  m_owner: {fileID: 7283236049483255735}
 --- !u!1 &3423905699157181539
 GameObject:
   m_ObjectHideFlags: 0
@@ -373,7 +373,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e35b2a60780dd4744a56df64fabf392e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_owner: {fileID: 5512288026075975478}
+  m_owner: {fileID: 7283236049483255735}
 --- !u!1 &5461720884603550278
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,7 +384,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2108464852946157937}
   - component: {fileID: 4750848640104974235}
-  - component: {fileID: 5512288026075975478}
+  - component: {fileID: 7283236049483255735}
   m_Layer: 0
   m_Name: Dummy
   m_TagString: Untagged
@@ -421,7 +421,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7d6025ae3588981459eeec427ac3e1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5512288026075975478
+--- !u!114 &7283236049483255735
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -430,7 +430,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5461720884603550278}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7466599154ff2d8459faa07e20d426d0, type: 3}
+  m_Script: {fileID: 11500000, guid: 7916696d853d89b42a939266c8ca605b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_params:
@@ -458,7 +458,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_combatController
       value: 
-      objectReference: {fileID: 5512288026075975478}
+      objectReference: {fileID: 7283236049483255735}
     - target: {fileID: 6420774107460297963, guid: 7c72e1a6b7d68174d9b58a5ec318fc49,
         type: 3}
       propertyPath: m_Pivot.x

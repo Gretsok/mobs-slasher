@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Mobs.Gameplay.Character
@@ -7,26 +8,11 @@ namespace Mobs.Gameplay.Character
         [SerializeField]
         private CharacterAnimationsController m_animationsController = null;
 
-        [SerializeField]
-        private Combat.DamageDealer m_sword = null;
+        public Action<CharacterAnimationEventsHandler, string> OnAnimationEventThrown = null;
 
-        #region SwordHit
-        public void SwordHit_AnimationEnd()
+        public void HandleAnimationEvent(string a_eventKey)
         {
-            m_animationsController.DeactivateSwordHitLayer();
+            OnAnimationEventThrown?.Invoke(this, a_eventKey);
         }
-
-        public void SwordHit_StartDealingDamage()
-        {
-            m_sword.ResetTargetsHitData();
-            m_sword.SetCanDealDamage(true);
-        }
-
-        public void SwordHit_StopDealingDamage()
-        {
-            m_sword.SetCanDealDamage(false);
-        }
-
-        #endregion
     }
 }

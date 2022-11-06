@@ -6,10 +6,10 @@ namespace Mobs.Gameplay.Combat
     public class DamageDealer : MonoBehaviour
     {
         [SerializeField]
-        private CombatController m_owner = null;
-        public CombatController Owner => m_owner;
+        private DamageHandlingController m_owner = null;
+        public DamageHandlingController Owner => m_owner;
 
-        public void SetOwner(CombatController a_owner)
+        public void SetOwner(DamageHandlingController a_owner)
         {
             m_owner = a_owner;
         }
@@ -23,7 +23,7 @@ namespace Mobs.Gameplay.Combat
         [System.Serializable]
         public class TargetHitData
         {
-            public CombatController CombatController = null;
+            public DamageHandlingController CombatController = null;
             public float LastTimeHit = float.MinValue;
         }
         private List<TargetHitData> m_targetsHit = new List<TargetHitData>();
@@ -44,7 +44,7 @@ namespace Mobs.Gameplay.Combat
 
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if(other.TryGetComponent(out CombatControllerCollisionRelay combatControllerCollisionRelay) && m_canDealDamage
+            if(other.TryGetComponent(out DamageHandlingControllerCollisionRelay combatControllerCollisionRelay) && m_canDealDamage
                 && (Owner == null || combatControllerCollisionRelay.Owner == null || Owner.TeamIndex != combatControllerCollisionRelay.Owner.TeamIndex))
             {
                 var registeredTarget = m_targetsHit.Find(t => t.CombatController == combatControllerCollisionRelay.Owner);
@@ -72,7 +72,7 @@ namespace Mobs.Gameplay.Combat
             }
         }
 
-        protected virtual void OnCombatControllerCollisionRelayHit(CombatControllerCollisionRelay a_combatControllerCollisionRelay)
+        protected virtual void OnCombatControllerCollisionRelayHit(DamageHandlingControllerCollisionRelay a_combatControllerCollisionRelay)
         {
 
         }

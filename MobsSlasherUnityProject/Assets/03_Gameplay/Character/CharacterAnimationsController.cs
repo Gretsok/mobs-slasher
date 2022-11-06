@@ -10,7 +10,14 @@ namespace Mobs.Gameplay.Character
         [SerializeField]
         private KinematicCharacterController.KinematicCharacterMotor m_movementMotor = null;
 
+        private AnimatorOverrideController m_overrideController = null;
         #region Life Cycle
+        private void Start()
+        {
+            m_overrideController = new AnimatorOverrideController(m_animator.runtimeAnimatorController);
+            m_animator.runtimeAnimatorController = m_overrideController;
+        }
+
         private void LateUpdate()
         {
             SetSpeed(m_movementMotor.BaseVelocity.magnitude);
@@ -38,22 +45,31 @@ namespace Mobs.Gameplay.Character
 
         #region Attack
         #region Sword Hit
-        private readonly int m_swordHitAnimationHash = Animator.StringToHash("SwordHit");
+        private readonly int m_upperBodyPartActionAnimationHash = Animator.StringToHash("UpperBodyPartAction");
 
-        public void PlaySwordHitAnimation()
+        public void PlayUpperBodyPartActionAnimation(AnimationClip a_actionClip)
         {
-            m_animator.SetTrigger(m_swordHitAnimationHash);
+            if(a_actionClip == null)
+            {
+                Debug.LogError("Action clip is null");
+                return;
+            }
+
+
+            m_overrideController["UpperBodyPartAction"] = a_actionClip;
+
+            m_animator.SetTrigger(m_upperBodyPartActionAnimationHash);
             ActivateSwordHitLayer();
         }
 
         public void ActivateSwordHitLayer()
         {
-            StartCoroutine(ActivatingSwordHitLayerRoutine());
+            StartCoroutine(ActivatingUpperBodyPartLayerRoutine());
         }
-        private IEnumerator ActivatingSwordHitLayerRoutine()
+        private IEnumerator ActivatingUpperBodyPartLayerRoutine()
         {
             float weight = 0f;
-            int layerIndex = m_animator.GetLayerIndex("SwordHitLayer");
+            int layerIndex = m_animator.GetLayerIndex("UpperBodyPart");
             m_animator.SetLayerWeight(layerIndex, weight);
             float lastTime = Time.time;
             while(weight < 1f)
@@ -68,7 +84,7 @@ namespace Mobs.Gameplay.Character
             m_animator.SetLayerWeight(layerIndex, weight);
         }
 
-        public void DeactivateSwordHitLayer()
+        public void DeactivateUpperBodyPartLayer()
         {
             StartCoroutine(DeactivatingSwordHitLayerRoutine());
         }

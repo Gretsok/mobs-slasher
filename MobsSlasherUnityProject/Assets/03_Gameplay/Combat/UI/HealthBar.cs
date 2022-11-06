@@ -9,7 +9,7 @@ namespace Mobs.Gameplay.Combat.UI
     public class HealthBar : MonoBehaviour
     {
         [SerializeField]
-        private CombatController m_combatController = null;
+        private DamageHandlingController m_combatController = null;
 
         [SerializeField]
         private Image m_midSlider = null;
@@ -33,7 +33,7 @@ namespace Mobs.Gameplay.Combat.UI
             }
         }
 
-        private void HandleDamageTaken(CombatController a_combatController, int a_newLife, int a_olfLife)
+        private void HandleDamageTaken(DamageHandlingController a_combatController, int a_newLife, int a_olfLife)
         {
             SetLife((float)m_combatController.LifePoints / (float)m_combatController.MaxLifePoints);
         }

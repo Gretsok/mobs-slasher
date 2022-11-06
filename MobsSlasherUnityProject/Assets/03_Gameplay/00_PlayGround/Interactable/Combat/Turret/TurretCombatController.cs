@@ -5,10 +5,10 @@ using UnityEngine;
 
 namespace Mobs.Gameplay.Interactable.Combat
 {
-    public class TurretCombatController : CombatController
+    public class TurretCombatController : DamageHandlingController
     {
-        private List<CombatControllerCollisionRelay> m_closeTargets = new List<CombatControllerCollisionRelay>();
-        private CombatControllerCollisionRelay m_currentTarget = null;
+        private List<DamageHandlingControllerCollisionRelay> m_closeTargets = new List<DamageHandlingControllerCollisionRelay>();
+        private DamageHandlingControllerCollisionRelay m_currentTarget = null;
         [SerializeField]
         private Transform m_canon = null;
         [SerializeField]
@@ -31,7 +31,6 @@ namespace Mobs.Gameplay.Interactable.Combat
         {
             if (Time.time - m_lastTimeOfShoot < m_shootingCooldown) return;
             var newBullet = Instantiate(m_bullet, m_bulletSpawnPoint.position, m_bulletSpawnPoint.rotation);
-            Debug.Log($"new bullet : {newBullet.name} created");
             newBullet.SetOwner(this);
             m_lastTimeOfShoot = Time.time;
         }
@@ -96,7 +95,7 @@ namespace Mobs.Gameplay.Interactable.Combat
 
         private void HandleDetectionZoneTriggerEntered(Collider other)
         {
-            if(other.TryGetComponent(out CombatControllerCollisionRelay a_combatCollisionRelay) 
+            if(other.TryGetComponent(out DamageHandlingControllerCollisionRelay a_combatCollisionRelay) 
                 && (!a_combatCollisionRelay.Owner || a_combatCollisionRelay.Owner.TeamIndex != TeamIndex))
             {
                 if(!m_closeTargets.Contains(a_combatCollisionRelay))
@@ -108,7 +107,7 @@ namespace Mobs.Gameplay.Interactable.Combat
 
         private void HandleDetectionZoneTriggerExit(Collider other)
         {
-            if (other.TryGetComponent(out CombatControllerCollisionRelay a_combatCollisionRelay))
+            if (other.TryGetComponent(out DamageHandlingControllerCollisionRelay a_combatCollisionRelay))
             {
                 if (m_closeTargets.Contains(a_combatCollisionRelay))
                 {
