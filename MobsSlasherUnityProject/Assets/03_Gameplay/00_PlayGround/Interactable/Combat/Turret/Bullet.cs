@@ -1,7 +1,7 @@
 using Mobs.Gameplay.Combat;
 using UnityEngine;
 
-namespace Mobs.Gameplay.Interactable.Combat
+namespace Mobs.Gameplay.Playground.Combat
 {
     public class Bullet : DamageDealer
     {

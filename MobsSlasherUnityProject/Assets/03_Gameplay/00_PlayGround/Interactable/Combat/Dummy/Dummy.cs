@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Mobs.Gameplay.Interactable.Combat
+namespace Mobs.Gameplay.Playground.Combat
 {
     public class Dummy : MonoBehaviour
     {

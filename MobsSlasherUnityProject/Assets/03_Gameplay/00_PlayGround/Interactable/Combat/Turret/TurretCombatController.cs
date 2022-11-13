@@ -3,7 +3,7 @@ using Mobs.Tools;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Mobs.Gameplay.Interactable.Combat
+namespace Mobs.Gameplay.Playground.Combat
 {
     public class TurretCombatController : DamageHandlingController
     {
