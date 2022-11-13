@@ -13,9 +13,9 @@ namespace Mobs.Gameplay.Interactable.Combat
             transform.position += transform.forward * m_travelSpeed * Time.fixedDeltaTime;
         }
 
-        protected override void OnCombatControllerCollisionRelayHit(DamageHandlingControllerCollisionRelay a_combatControllerCollisionRelay)
+        protected override void OnEnnemyDamageHandlingControllerCollisionRelayHit(DamageHandlingControllerCollisionRelay a_combatControllerCollisionRelay)
         {
-            base.OnCombatControllerCollisionRelayHit(a_combatControllerCollisionRelay);
+            base.OnEnnemyDamageHandlingControllerCollisionRelayHit(a_combatControllerCollisionRelay);
             Destroy(gameObject);
         }
     }

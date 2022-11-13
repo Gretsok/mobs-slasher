@@ -15,5 +15,12 @@ namespace Mobs.Gameplay.Character
         [SerializeField]
         private Transform m_rightHand = null;
         public Transform RightHand => m_rightHand;
+
+
+
+        public virtual Ray GetSight()
+        {
+            return new Ray(transform.position + Vector3.up, transform.forward);
+        }
     }
 }

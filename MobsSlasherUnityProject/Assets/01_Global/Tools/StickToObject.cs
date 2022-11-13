@@ -11,7 +11,7 @@ namespace Mobs.Tools
 
         protected virtual void LateUpdate()
         {
-            transform.position = m_target.position + m_offset;
+            transform.position = m_target.position + m_target.TransformDirection(m_offset);
         }
     }
 }

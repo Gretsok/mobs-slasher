@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -44,35 +45,47 @@ namespace Mobs.Gameplay.Combat
 
         protected virtual void OnTriggerEnter(Collider other)
         {
-            if(other.TryGetComponent(out DamageHandlingControllerCollisionRelay combatControllerCollisionRelay) && m_canDealDamage
-                && (Owner == null || combatControllerCollisionRelay.Owner == null || Owner.TeamIndex != combatControllerCollisionRelay.Owner.TeamIndex))
+            if(other.TryGetComponent(out DamageHandlingControllerCollisionRelay combatControllerCollisionRelay))
             {
-                var registeredTarget = m_targetsHit.Find(t => t.CombatController == combatControllerCollisionRelay.Owner);
-                if (registeredTarget != null)
+                if (m_canDealDamage
+                && (Owner == null || combatControllerCollisionRelay.Owner == null || Owner.TeamIndex != combatControllerCollisionRelay.Owner.TeamIndex))
                 {
-                    if(Time.time - registeredTarget.LastTimeHit < m_damageDealingToATargetCooldown)
+                    var registeredTarget = m_targetsHit.Find(t => t.CombatController == combatControllerCollisionRelay.Owner);
+                    if (registeredTarget != null)
                     {
-                        return;
+                        if (Time.time - registeredTarget.LastTimeHit < m_damageDealingToATargetCooldown)
+                        {
+                            return;
+                        }
                     }
-                }
-                else
-                {
-                    registeredTarget = new TargetHitData();
-                    registeredTarget.CombatController = combatControllerCollisionRelay.Owner;
-                    m_targetsHit.Add(registeredTarget);
-                }
+                    else
+                    {
+                        registeredTarget = new TargetHitData();
+                        registeredTarget.CombatController = combatControllerCollisionRelay.Owner;
+                        m_targetsHit.Add(registeredTarget);
+                    }
 
-                Damage newDamage = new Damage();
-                newDamage.DamageToDeal = m_damageToDeal;
-                newDamage.Source = this;
-                registeredTarget.LastTimeHit = Time.time;
-                combatControllerCollisionRelay.Owner.TakeDamage(newDamage);
+                    Damage newDamage = new Damage();
+                    newDamage.DamageToDeal = m_damageToDeal;
+                    newDamage.Source = this;
+                    registeredTarget.LastTimeHit = Time.time;
+                    combatControllerCollisionRelay.Owner.TakeDamage(newDamage);
 
-                OnCombatControllerCollisionRelayHit(combatControllerCollisionRelay);
+                    OnEnnemyDamageHandlingControllerCollisionRelayHit(combatControllerCollisionRelay);
+                }
+            }
+            else
+            {
+                OnHitWithNoDamageHandlingController();
             }
         }
 
-        protected virtual void OnCombatControllerCollisionRelayHit(DamageHandlingControllerCollisionRelay a_combatControllerCollisionRelay)
+        protected virtual void OnHitWithNoDamageHandlingController()
+        {
+            
+        }
+
+        protected virtual void OnEnnemyDamageHandlingControllerCollisionRelayHit(DamageHandlingControllerCollisionRelay a_combatControllerCollisionRelay)
         {
 
         }

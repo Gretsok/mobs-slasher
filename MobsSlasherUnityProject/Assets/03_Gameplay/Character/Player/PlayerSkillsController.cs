@@ -1,4 +1,6 @@
 
+using UnityEngine;
+
 namespace Mobs.Gameplay.Character.Player
 {
     public class PlayerSkillsController : CharacterSkillsController
@@ -8,6 +10,7 @@ namespace Mobs.Gameplay.Character.Player
         private void Start()
         {
             EquipSkill(0, 0);
+            EquipSkill(1, 1);
         }
 
         public void SetInputs(ref PlayerCharacterInputs inputs)
@@ -41,6 +44,11 @@ namespace Mobs.Gameplay.Character.Player
             {
                 StopThirdSkill();
             }
+        }
+
+        public override Ray GetSight()
+        {
+            return new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         }
 
     }

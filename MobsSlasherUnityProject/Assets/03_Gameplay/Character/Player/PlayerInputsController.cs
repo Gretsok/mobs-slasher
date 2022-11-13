@@ -122,7 +122,7 @@ namespace Mobs.Gameplay.Character.Player
         #region Skills Callback
         private void FirstAttack_canceled(UnityEngine.InputSystem.InputAction.CallbackContext obj)
         {
-            m_inputs.StartFirstAttack = true;
+            m_inputs.StopFirstAttack = true;
         }
 
         private void FirstAttack_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)

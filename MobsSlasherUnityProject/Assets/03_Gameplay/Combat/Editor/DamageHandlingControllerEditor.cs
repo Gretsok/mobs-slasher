@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Mobs.Gameplay.Combat.Editor
 {
     [CustomEditor(typeof(DamageHandlingController), true)]
-    public class CombatControllerEditor : UnityEditor.Editor
+    public class DamageHandlingControllerEditor : UnityEditor.Editor
     {
         public override void OnInspectorGUI()
         {
