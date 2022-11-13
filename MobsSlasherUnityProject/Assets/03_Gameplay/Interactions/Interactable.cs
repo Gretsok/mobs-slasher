@@ -1,3 +1,4 @@
+using Mobs.Tools;
 using UnityEngine;
 
 namespace Mobs.Gameplay.Interactions
@@ -14,6 +15,28 @@ namespace Mobs.Gameplay.Interactions
         private AInteractionEffect m_enterProximityEffect = null;
         [SerializeField]
         private AInteractionEffect m_exitProximityEffect = null;
+        [SerializeField]
+        private CollisionsEventsRelay m_detectionZoneForProximity = null;
+
+        private void Start()
+        {
+            if(m_detectionZoneForProximity)
+            {
+                m_detectionZoneForProximity.OnTriggerEnterEvent += HandleDetectionZoneTriggerEnter;
+                m_detectionZoneForProximity.OnTriggerExitEvent += HandleDetectionZoneTriggerExit;
+                m_detectionZoneForProximity.gameObject.layer = LayerMask.NameToLayer("DetectionZone");
+            }
+            
+        }
+
+        private void OnDestroy()
+        {
+            if(m_detectionZoneForProximity)
+            {
+                m_detectionZoneForProximity.OnTriggerEnterEvent -= HandleDetectionZoneTriggerEnter;
+                m_detectionZoneForProximity.OnTriggerExitEvent -= HandleDetectionZoneTriggerExit;
+            }  
+        }
 
         public void DoActivationEffect(Interactor a_interactor)
         {
@@ -54,20 +77,22 @@ namespace Mobs.Gameplay.Interactions
             }
         }
 
-        private void OnTriggerEnter(Collider other)
-        {
-            if(other.TryGetComponent(out Interactor interactor))
-            {
-                DoEnterProximityEffect(interactor);
-            }
-        }
-
-        private void OnTriggerExit(Collider other)
+        #region Detection Zone Callbacks
+        private void HandleDetectionZoneTriggerExit(Collider other)
         {
             if (other.TryGetComponent(out Interactor interactor))
             {
                 DoExitProximityEffect(interactor);
             }
         }
+
+        private void HandleDetectionZoneTriggerEnter(Collider other)
+        {
+            if (other.TryGetComponent(out Interactor interactor))
+            {
+                DoEnterProximityEffect(interactor);
+            }
+        }
+        #endregion
     }
 }

@@ -158,7 +158,7 @@ PrefabInstance:
     - target: {fileID: 5196183023123810827, guid: f0ef9aa0a41265043a203506afaff665,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5196183023123810829, guid: f0ef9aa0a41265043a203506afaff665,
         type: 3}
@@ -233,7 +233,7 @@ GameObject:
   m_Component:
   - component: {fileID: 567504714}
   m_Layer: 0
-  m_Name: Interactables
+  m_Name: DummiesAndCo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,9 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Mobs.Gameplay.Interactions
 {
     public class Interactor : MonoBehaviour
     {
+        private List<Interactable> m_overlappingInteractables = new List<Interactable>();
+
         private Interactable m_currentInteractable = null;
 
         [SerializeField]
@@ -13,33 +16,61 @@ namespace Mobs.Gameplay.Interactions
 
         private void FixedUpdate()
         {
-            Interactable interactableDetectedThisFrame = null;
-            var sight = GetSight();
-            if(Physics.Raycast(sight, out RaycastHit hitInfo, m_maxInteractionDistance, m_interactionMask))
+            AvoidNullRefsInOverlappingInteractables();
+
+            HandleSightInteraction();
+        }
+
+        private void AvoidNullRefsInOverlappingInteractables()
+        {
+            for (int i = m_overlappingInteractables.Count - 1; i >= 0; --i)
             {
-                if (Vector3.Distance(transform.position, hitInfo.collider.transform.position) < m_maxInteractionDistance)
+                if (!m_overlappingInteractables[i])
                 {
-                    interactableDetectedThisFrame = hitInfo.collider.GetComponent<Interactable>();
-                    Debug.DrawLine(sight.origin, hitInfo.point, Color.green);
+                    m_overlappingInteractables.RemoveAt(i);
                 }
-                else
-                {
-                    Debug.DrawLine(sight.origin, hitInfo.point, Color.yellow);
-                }
+            }
+        }
+
+        private void HandleSightInteraction()
+        {
+            Interactable interactableDetectedThisFrame = null;
+            if(m_overlappingInteractables.Count > 0)
+            {
+                interactableDetectedThisFrame = m_overlappingInteractables[0];
             }
             else
             {
-                Debug.DrawLine(sight.origin, sight.origin + sight.direction * m_maxInteractionDistance, Color.red);
+                var sight = GetSight();
+                if (Physics.Raycast(sight, out RaycastHit hitInfo, m_maxInteractionDistance, m_interactionMask))
+                {
+                    interactableDetectedThisFrame = hitInfo.collider.GetComponent<Interactable>();
+
+                    if (interactableDetectedThisFrame)
+                    {
+                        Debug.DrawLine(sight.origin, hitInfo.point, Color.green);
+                    }
+                    else
+                    {
+                        Debug.DrawLine(sight.origin, hitInfo.point, Color.yellow);
+                    }
+                }
+                else
+                {
+                    Debug.DrawLine(sight.origin, sight.origin + sight.direction * m_maxInteractionDistance, Color.red);
+                }
             }
 
-            if(interactableDetectedThisFrame != m_currentInteractable)
+            
+
+            if (interactableDetectedThisFrame != m_currentInteractable)
             {
-                if(m_currentInteractable)
+                if (m_currentInteractable)
                 {
                     m_currentInteractable.DoExitSightEffect(this);
                 }
                 m_currentInteractable = interactableDetectedThisFrame;
-                if(m_currentInteractable)
+                if (m_currentInteractable)
                 {
                     m_currentInteractable.DoEnterSightEffect(this);
                 }
@@ -59,6 +90,23 @@ namespace Mobs.Gameplay.Interactions
             return new Ray(transform.position + Vector3.up, transform.forward);
         }
 
+        private void OnTriggerEnter(Collider other)
+        {
+            if(other.TryGetComponent(out Interactable interactable))
+            {
+                if (!m_overlappingInteractables.Contains(interactable))
+                {
+                    m_overlappingInteractables.Add(interactable);
+                }
+            } 
+        }
 
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.TryGetComponent(out Interactable interactable))
+            {
+                m_overlappingInteractables.Remove(interactable);
+            }
+        }
     }
 }

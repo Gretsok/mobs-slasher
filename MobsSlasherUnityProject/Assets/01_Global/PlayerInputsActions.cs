@@ -181,6 +181,15 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""Button"",
+                    ""id"": ""1be194be-d937-4d20-a1f8-17efcb00a6af"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -326,6 +335,17 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
                     ""action"": ""ThirdAttack"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a8ab91b3-3764-42b5-9783-57c6db74edad"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""MouseAndKeyboard"",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -373,6 +393,7 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
         m_Gameplay_FirstAttack = m_Gameplay.FindAction("FirstAttack", throwIfNotFound: true);
         m_Gameplay_SecondAttack = m_Gameplay.FindAction("SecondAttack", throwIfNotFound: true);
         m_Gameplay_ThirdAttack = m_Gameplay.FindAction("ThirdAttack", throwIfNotFound: true);
+        m_Gameplay_Interact = m_Gameplay.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -473,6 +494,7 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
     private readonly InputAction m_Gameplay_FirstAttack;
     private readonly InputAction m_Gameplay_SecondAttack;
     private readonly InputAction m_Gameplay_ThirdAttack;
+    private readonly InputAction m_Gameplay_Interact;
     public struct GameplayActions
     {
         private @PlayerInputsActions m_Wrapper;
@@ -485,6 +507,7 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
         public InputAction @FirstAttack => m_Wrapper.m_Gameplay_FirstAttack;
         public InputAction @SecondAttack => m_Wrapper.m_Gameplay_SecondAttack;
         public InputAction @ThirdAttack => m_Wrapper.m_Gameplay_ThirdAttack;
+        public InputAction @Interact => m_Wrapper.m_Gameplay_Interact;
         public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -518,6 +541,9 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
                 @ThirdAttack.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThirdAttack;
                 @ThirdAttack.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThirdAttack;
                 @ThirdAttack.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnThirdAttack;
+                @Interact.started -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_GameplayActionsCallbackInterface.OnInteract;
             }
             m_Wrapper.m_GameplayActionsCallbackInterface = instance;
             if (instance != null)
@@ -546,6 +572,9 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
                 @ThirdAttack.started += instance.OnThirdAttack;
                 @ThirdAttack.performed += instance.OnThirdAttack;
                 @ThirdAttack.canceled += instance.OnThirdAttack;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
         }
     }
@@ -582,5 +611,6 @@ public partial class @PlayerInputsActions : IInputActionCollection2, IDisposable
         void OnFirstAttack(InputAction.CallbackContext context);
         void OnSecondAttack(InputAction.CallbackContext context);
         void OnThirdAttack(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }

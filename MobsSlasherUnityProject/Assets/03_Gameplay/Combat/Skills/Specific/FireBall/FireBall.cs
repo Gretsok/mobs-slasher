@@ -29,7 +29,7 @@ namespace Mobs.Gameplay.Combat.Skills
             }
         }
 
-        protected override void OnHitWithNoDamageHandlingController()
+        private void OnCollisionEnter(Collision collision)
         {
             DestroyFireBall();
         }

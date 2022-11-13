@@ -23,6 +23,7 @@ namespace Mobs.Gameplay.Character.Player
             m_actions.Gameplay.SecondAttack.canceled += SecondAttack_canceled;
             m_actions.Gameplay.ThirdAttack.started += ThirdAttack_started;
             m_actions.Gameplay.ThirdAttack.canceled += ThirdAttack_canceled;
+            m_actions.Gameplay.Interact.started += Interact_started;
         }
 
 
@@ -39,6 +40,7 @@ namespace Mobs.Gameplay.Character.Player
             m_actions.Gameplay.SecondAttack.canceled -= SecondAttack_canceled;
             m_actions.Gameplay.ThirdAttack.started -= ThirdAttack_started;
             m_actions.Gameplay.ThirdAttack.canceled -= ThirdAttack_canceled;
+            m_actions.Gameplay.Interact.started -= Interact_started;
 
             m_actions.Disable();
             m_actions.Dispose();
@@ -71,6 +73,10 @@ namespace Mobs.Gameplay.Character.Player
             {
                 m_inputs.StopThirdAttack = false;
             }
+            if(m_inputs.Interact)
+            {
+                m_inputs.Interact = false;
+            }
         }
         #endregion
 
@@ -84,6 +90,8 @@ namespace Mobs.Gameplay.Character.Player
         private PlayerDamageHandlingController m_combatController = null;
         [SerializeField]
         private PlayerSkillsController m_playerSkillsController = null;
+        [SerializeField]
+        private Interactions.Interactor m_interactor = null;
         private PlayerCharacterInputs m_inputs = default;
 
         private void ReadInputs()
@@ -95,6 +103,10 @@ namespace Mobs.Gameplay.Character.Player
             m_cameraController.SetInputs(ref m_inputs);
             m_combatController.SetInputs(ref m_inputs);
             m_playerSkillsController.SetInputs(ref m_inputs);
+            if(m_inputs.Interact)
+            {
+                m_interactor.Interact();
+            }
         }
         #endregion
 
@@ -148,5 +160,10 @@ namespace Mobs.Gameplay.Character.Player
             m_inputs.StartThirdAttack = true;
         }
         #endregion
+
+        private void Interact_started(UnityEngine.InputSystem.InputAction.CallbackContext obj)
+        {
+            m_inputs.Interact = true;
+        }
     }
 }
